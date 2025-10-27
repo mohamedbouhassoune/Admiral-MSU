@@ -15,11 +15,70 @@
   <meta name="twitter:description" content="Deploy {{brand_name}}'s Mobile Surveillance Unit for rapid, autonomous security coverage. Purchase or rent across {{service_region}}.">
   <style>
     :root {
+      color-scheme: light;
       --primary: {{primary_color}};
       --accent: {{accent_color}};
       --dark: {{dark_text}};
       --light: {{light_text}};
       --muted: {{muted_text}};
+      --bg: {{bg_light}};
+      --shadow-lg: 0 28px 60px rgba(12, 27, 42, 0.18);
+      --shadow-sm: 0 14px 28px rgba(12, 27, 42, 0.12);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max-width: 1180px;
+    }
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      line-height: 1.6;
+      font-feature-settings: "liga" 1, "kern" 1;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 15% 20%, rgba(231, 176, 60, 0.16), transparent 55%),
+                  radial-gradient(circle at 85% 15%, rgba(12, 27, 42, 0.16), transparent 55%);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: -2;
+    }
+    img { max-width: 100%; display: block; height: auto; }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      padding: 0;
+      white-space: nowrap;
+    }
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
+      width: auto;
+      height: auto;
+      padding: 0.75rem 1.25rem;
+      background: var(--accent);
+      color: var(--dark);
+      border-radius: 999px;
+      box-shadow: var(--shadow-sm);
+      z-index: 50;
+    }
+    .wrapper {
+      width: min(100% - clamp(2rem, 6vw, 4rem), var(--max-width));
+      margin-inline: auto;
       --bg-light: {{bg_light}};
       --max-width: 1200px;
       --shadow: 0 18px 32px rgba(12, 27, 42, 0.15);
@@ -49,6 +108,10 @@
     header {
       position: sticky;
       top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid rgba(12, 27, 42, 0.08);
+      backdrop-filter: blur(18px);
       z-index: 10;
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
@@ -59,6 +122,23 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      padding: clamp(0.75rem, 2vw, 1rem) 0;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      letter-spacing: 0.05em;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .logo::before {
+      content: "";
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(12, 27, 42, 0.9), rgba(231, 176, 60, 0.9));
     }
     .logo {
       font-weight: 700;
@@ -69,6 +149,21 @@
     .top-actions {
       display: flex;
       align-items: center;
+      gap: clamp(0.4rem, 2vw, 1rem);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .lang-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      background: rgba(12, 27, 42, 0.06);
+      padding: 0.2rem;
+    }
+    .lang-toggle button {
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      color: var(--muted);
+      transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
       gap: clamp(0.5rem, 2vw, 1rem);
       flex-wrap: wrap;
       justify-content: flex-end;
@@ -83,6 +178,71 @@
     .lang-toggle button[aria-pressed="true"] {
       background: var(--primary);
       color: var(--light);
+      box-shadow: 0 8px 16px rgba(12, 27, 42, 0.22);
+    }
+    .top-phone {
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      padding-inline: 0.2rem;
+    }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.65rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--dark);
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+    .cta-button:hover,
+    .cta-button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+    }
+    main { display: block; }
+    section {
+      position: relative;
+      padding: clamp(3rem, 7vw, 5.5rem) 0;
+    }
+    h1, h2, h3, h4 { color: var(--dark); }
+    h1 { margin: 0; font-size: clamp(2.3rem, 4vw, 3.6rem); letter-spacing: -0.01em; }
+    h2 { margin: 0 0 clamp(1.4rem, 4vw, 2.2rem); font-size: clamp(1.9rem, 3.2vw, 2.5rem); letter-spacing: -0.01em; }
+    h3 { margin-top: 0; font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+    p { margin: 0 0 1rem; }
+    .section-intro {
+      max-width: 720px;
+      margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+    }
+    .hero {
+      background: linear-gradient(135deg, rgba(12, 27, 42, 0.95), rgba(12, 27, 42, 0.85));
+      color: var(--light);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 18% 25%, rgba(231, 176, 60, 0.22), transparent 60%),
+                  radial-gradient(circle at 85% 60%, rgba(255, 255, 255, 0.12), transparent 55%);
+      pointer-events: none;
+    }
+    .hero .wrapper {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-grid {
+      display: grid;
+      gap: clamp(2rem, 6vw, 3.5rem);
+      align-items: center;
+    }
+    .hero-copy { max-width: 640px; }
+    .hero-copy p { color: rgba(255, 255, 255, 0.88); font-size: clamp(1rem, 2.4vw, 1.25rem); }
     }
     .muted-link {
       color: var(--muted);
@@ -144,6 +304,145 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+      margin-bottom: clamp(1.6rem, 4vw, 2.4rem);
+    }
+    .cta-button[data-variant="secondary"] {
+      background: transparent;
+      color: var(--light);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(6px);
+    }
+    .cta-button[data-variant="secondary"]:hover,
+    .cta-button[data-variant="secondary"]:focus-visible {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--light);
+    }
+    .trust-strip {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      background: rgba(12, 27, 42, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95rem;
+    }
+    .hero-media {
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding: clamp(1.5rem, 4vw, 2.25rem);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(12px);
+      max-width: 380px;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: -22%;
+      border-radius: 36px;
+      background: linear-gradient(135deg, rgba(231, 176, 60, 0.35), rgba(12, 27, 42, 0.05));
+      filter: blur(18px);
+      z-index: -1;
+    }
+    .hero-card figure {
+      margin: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+    .hero-card figcaption {
+      margin-top: 0.85rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+    .hero-pillars {
+      display: grid;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+      padding: 0;
+    }
+    .hero-pillars li {
+      list-style: none;
+      padding: 0.65rem 0.9rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      font-size: 0.95rem;
+    }
+    .value-grid {
+      display: grid;
+      gap: clamp(1.2rem, 4vw, 1.8rem);
+    }
+    .card {
+      position: relative;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: clamp(1.6rem, 3vw, 2.2rem);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(12, 27, 42, 0.08);
+      isolation: isolate;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(231, 176, 60, 0.18), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .card:hover::before { opacity: 1; }
+    .value-card svg {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 1.2rem;
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 1.7;
+    }
+    .value-card p { color: var(--muted); }
+    .use-cases {
+      display: grid;
+      gap: clamp(1.2rem, 4vw, 1.8rem);
+    }
+    .use-card {
+      padding: clamp(1.4rem, 3vw, 1.9rem);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(12, 27, 42, 0.08);
+      box-shadow: 0 18px 36px rgba(12, 27, 42, 0.12);
+      backdrop-filter: blur(6px);
+    }
+    .use-card p { color: var(--muted); margin-bottom: 0; }
+    .comparison {
+      display: grid;
+      gap: clamp(1.2rem, 4vw, 2rem);
+    }
+    .comparison-card {
+      border-radius: var(--radius-lg);
+      padding: clamp(1.8rem, 4vw, 2.4rem);
+      background: #fff;
+      border: 1px solid rgba(12, 27, 42, 0.08);
+      box-shadow: var(--shadow-sm);
+    }
+    .comparison-card:nth-child(1) { border-top: 5px solid var(--accent); }
+    .comparison-card:nth-child(2) { border-top: 5px solid rgba(12, 27, 42, 0.9); }
+    .comparison-card ul { margin: 0 0 1.2rem; padding-left: 1.25rem; color: var(--muted); }
+    details.tech-spec {
+      border-radius: var(--radius-lg);
+      padding: clamp(1.4rem, 3vw, 1.9rem);
+      margin-bottom: 1rem;
+      background: #fff;
+      border: 1px solid rgba(12, 27, 42, 0.08);
+      box-shadow: 0 16px 32px rgba(12, 27, 42, 0.08);
     }
     .hero-cta a:first-child {
       background: var(--accent);
@@ -235,11 +534,89 @@
       font-weight: 600;
       font-size: 1.1rem;
       list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    details[open] summary svg { transform: rotate(45deg); }
     }
     details summary::-webkit-details-marker { display: none; }
     .tech-list {
       margin: 1rem 0 0;
       padding-left: 1.2rem;
+      color: var(--muted);
+    }
+    .tech-list li { margin-bottom: 0.5rem; }
+    .trust {
+      background: linear-gradient(145deg, rgba(12, 27, 42, 0.96), rgba(12, 27, 42, 0.85));
+      color: var(--light);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.2rem, 5vw, 3rem);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .trust::after {
+      content: "";
+      position: absolute;
+      inset: 12% -20% -20% 40%;
+      background: radial-gradient(circle, rgba(231, 176, 60, 0.25), transparent 65%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .trust-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.6rem;
+    }
+    .trust-logo {
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+    blockquote {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    blockquote p { color: rgba(255, 255, 255, 0.9); }
+    blockquote cite {
+      display: block;
+      margin-top: 0.85rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.75);
+      font-style: normal;
+    }
+    .pricing-teaser { text-align: center; }
+    .pricing-teaser p { color: var(--muted); }
+    .pricing-buttons {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.6rem;
+      background: #fff;
+      padding: 0.6rem;
+      border-radius: 999px;
+      box-shadow: var(--shadow-sm);
+    }
+    .pricing-buttons button {
+      padding: 0.7rem 1.65rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: transparent;
+      font-weight: 600;
+      transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+      color: var(--primary);
+    }
+    .pricing-buttons button:hover,
+    .pricing-buttons button:focus-visible {
+      background: var(--primary);
+      color: var(--light);
+      border-color: rgba(12, 27, 42, 0.8);
     }
     .trust {
       background: linear-gradient(135deg, rgba(12,27,42,0.96), rgba(12,27,42,0.88));
@@ -287,6 +664,9 @@
     }
     form {
       background: #fff;
+      border-radius: var(--radius-lg);
+      padding: clamp(1.8rem, 4vw, 2.6rem);
+      box-shadow: var(--shadow-lg);
       border-radius: var(--radius);
       padding: clamp(1.75rem, 4vw, 2.5rem);
       box-shadow: 0 24px 48px rgba(12, 27, 42, 0.1);
@@ -294,10 +674,53 @@
     }
     .form-grid {
       display: grid;
+      gap: 1.3rem;
       gap: 1.25rem;
     }
     label {
       display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.78rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(12, 27, 42, 0.18);
+      background: rgba(255, 255, 255, 0.95);
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+      font: inherit;
+    }
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(231, 176, 60, 0.28);
+      outline: none;
+    }
+    textarea { min-height: 130px; resize: vertical; }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+    .consent input { width: auto; margin-top: 0.3rem; }
+    .alt-contact { font-size: 0.95rem; color: var(--muted); margin-top: 1.6rem; }
+    .faq-list { display: grid; gap: 1rem; }
+    .faq-item {
+      border-radius: var(--radius-md);
+      background: #fff;
+      border: 1px solid rgba(12, 27, 42, 0.08);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-item button {
+      width: 100%;
+      padding: 1.1rem 1.3rem;
+      text-align: left;
       font-weight: 600;
       margin-bottom: 0.35rem;
     }
@@ -346,6 +769,33 @@
       align-items: center;
       gap: 1rem;
     }
+    .faq-item button span[aria-hidden="true"] {
+      font-size: 1.5rem;
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+    .faq-item button:focus-visible { outline: 2px solid var(--accent); }
+    .faq-item[open] button span[aria-hidden="true"] { transform: rotate(45deg); }
+    .faq-item > div { padding: 0 1.3rem 1.3rem; color: var(--muted); }
+    .final-cta {
+      background: linear-gradient(135deg, rgba(12, 27, 42, 0.94), rgba(12, 27, 42, 0.88));
+      color: var(--light);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.4rem, 5vw, 3.4rem);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+    .final-cta h2 { color: var(--light); margin-bottom: 1.6rem; }
+    .final-cta .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    footer {
+      background: rgba(255, 255, 255, 0.92);
+      border-top: 1px solid rgba(12, 27, 42, 0.08);
+      padding: clamp(2.2rem, 5vw, 3rem) 0;
     .faq-item button:focus-visible {
       outline: 2px solid var(--accent);
     }
@@ -381,6 +831,13 @@
       display: grid;
       gap: 2rem;
     }
+    .footer-links,
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.95rem;
+    }
     .footer-links {
       display: flex;
       gap: 1rem;
@@ -396,6 +853,33 @@
       right: 1.5rem;
       background: var(--primary);
       color: var(--light);
+      padding: 1rem 1.3rem;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 40;
+      min-width: 240px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    @media (min-width: 640px) {
+      .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); }
+      .value-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .use-cases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .faq-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid > div:nth-child(n+9) { grid-column: 1 / -1; }
+    }
+    @media (min-width: 960px) {
+      .value-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .use-cases { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .footer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
       padding: 1rem 1.25rem;
       border-radius: 12px;
       box-shadow: var(--shadow);
@@ -439,6 +923,35 @@
       }
     },
     "url": "{{website}}",
+    "description": "Rapid deployment Mobile Surveillance Unit with autonomous power, AI analytics, and remote monitoring. Purchase or rent anywhere in {{service_region}}.",
+    "offers": [
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceCurrency": "CAD",
+          "description": "Custom pricing for purchase options"
+        },
+        "seller": {
+          "@type": "Organization",
+          "name": "{{brand_name}}"
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceCurrency": "CAD",
+          "description": "Flexible rental agreements"
+        },
+        "seller": {
+          "@type": "Organization",
+          "name": "{{brand_name}}"
+        }
+      }
+    ]
     "description": "Rapid deployment Mobile Surveillance Unit with autonomous power, AI analytics, and remote monitoring. Purchase or rent across {{service_region}}.",
     "areaServed": "{{service_region}}",
     "offers": [{
@@ -464,6 +977,17 @@
   </script>
 </head>
 <body>
+  <a href="#lead-form" class="skip-link"><span data-lang="en">Skip to lead form</span><span data-lang="fr" hidden>Aller au formulaire de demande</span></a>
+  <header>
+    <div class="wrapper top-bar" id="top-bar">
+      <div class="logo" aria-label="{{brand_short}}">{{brand_short}}</div>
+      <div class="top-actions">
+        <div class="lang-toggle" role="group" aria-label="Language toggle" aria-controls="page-content">
+          <button type="button" data-lang-switch="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang-switch="fr" aria-pressed="false">FR</button>
+        </div>
+        <a class="top-phone" href="tel:{{cta_phone}}">{{cta_phone}}</a>
+        <a class="cta-button" data-track="cta-top" data-scroll data-target="#lead-form-section" href="#lead-form-section"><span data-lang="en">Request a Quote</span><span data-lang="fr" hidden>Demander une soumission</span></a>
   <div class="toast" role="status" aria-live="polite" id="form-toast"><span data-lang="en">Thanks! We'll contact you shortly.</span><span data-lang="fr" hidden>Merci! Nous vous contacterons sous peu.</span></div>
   <header>
     <div class="wrapper top-bar">
@@ -480,6 +1004,42 @@
   </header>
   <main id="page-content">
     <section class="hero">
+      <div class="wrapper hero-grid">
+        <div class="hero-copy">
+          <p class="lang-block" style="text-transform:uppercase; letter-spacing:0.16em; font-size:0.85rem; color:rgba(255,255,255,0.72);"><span data-lang="en">Mobile Surveillance Excellence</span><span data-lang="fr" hidden>Surveillance mobile d'exception</span></p>
+          <h1 class="lang-block"><span data-lang="en">Mobile Surveillance Unit (MSU) – 24/7 protection, rapid deployment</span><span data-lang="fr" hidden>Unité de surveillance mobile (MSU) – protection 24/7, déploiement rapide</span></h1>
+          <p class="lang-block"><span data-lang="en">Buy or rent {{brand_short}}’s autonomous MSU and secure critical sites, events, and municipalities in hours—not weeks.</span><span data-lang="fr" hidden>Achetez ou louez la MSU autonome de {{brand_short}} et sécurisez vos sites critiques, événements et municipalités en quelques heures seulement.</span></p>
+          <div class="hero-cta">
+            <a class="cta-button" data-track="cta-hero-primary" data-scroll data-target="#lead-form-section" href="#lead-form-section"><span data-lang="en">Request a Quote</span><span data-lang="fr" hidden>Demander une soumission</span></a>
+            <a class="cta-button" data-variant="secondary" data-track="cta-hero-call" href="tel:{{cta_phone}}"><span data-lang="en">Call Now</span><span data-lang="fr" hidden>Appelez maintenant</span></a>
+          </div>
+          <div class="trust-strip lang-block">
+            <span data-lang="en">Serving {{service_region}}</span>
+            <span data-lang="fr" hidden>Service {{service_region}}</span>
+            <span aria-hidden="true">•</span>
+            <span data-lang="en">Licensed &amp; insured</span>
+            <span data-lang="fr" hidden>Licencié et assuré</span>
+            <span aria-hidden="true">•</span>
+            <span data-lang="en">Rapid deployment 24/7</span>
+            <span data-lang="fr" hidden>Déploiement rapide 24/7</span>
+          </div>
+          <ul class="hero-pillars">
+            <li class="lang-block"><span data-lang="en">Autonomous power and AI monitoring reduce guard costs.</span><span data-lang="fr" hidden>Alimentation autonome et surveillance IA réduisent les coûts de gardiennage.</span></li>
+            <li class="lang-block"><span data-lang="en">Remote command centre integration for instant situational awareness.</span><span data-lang="fr" hidden>Intégration au centre de commande pour une connaissance immédiate de la situation.</span></li>
+            <li class="lang-block"><span data-lang="en">Delivered, configured, and activated by {{brand_short}} specialists.</span><span data-lang="fr" hidden>Livré, configuré et activé par les spécialistes de {{brand_short}}.</span></li>
+          </ul>
+        </div>
+        <div class="hero-media" aria-hidden="true">
+          <div class="hero-card">
+            <figure>
+              <picture>
+                <source type="image/webp" srcset="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%230C1B2A'/%3E%3Cpath d='M80 280h440l-30-140h-70l-30-60H210l-30 60h-70z' fill='%23E7B03C' opacity='0.35'/%3E%3Crect x='160' y='170' width='280' height='90' rx='14' fill='%23F5F7FA' opacity='0.65'/%3E%3Ccircle cx='210' cy='320' r='22' fill='%23E7B03C'/%3E%3Ccircle cx='410' cy='320' r='22' fill='%23E7B03C'/%3E%3C/svg%3E"/>
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%230C1B2A'/%3E%3Cpath d='M80 280h440l-30-140h-70l-30-60H210l-30 60h-70z' fill='%23E7B03C' opacity='0.35'/%3E%3Crect x='160' y='170' width='280' height='90' rx='14' fill='%23F5F7FA' opacity='0.65'/%3E%3Ccircle cx='210' cy='320' r='22' fill='%23E7B03C'/%3E%3Ccircle cx='410' cy='320' r='22' fill='%23E7B03C'/%3E%3C/svg%3E" alt="Illustration of the Mobile Surveillance Unit" loading="lazy">
+              </picture>
+              <figcaption class="lang-block"><span data-lang="en">MSU trailer with elevated mast, cameras, and solar array.</span><span data-lang="fr" hidden>Remorque MSU avec mât surélevé, caméras et panneaux solaires.</span></figcaption>
+            </figure>
+          </div>
+        </div>
       <div class="wrapper hero-inner">
         <div class="hero-copy">
           <h1 class="lang-block"><span data-lang="en">Mobile Surveillance Unit (MSU) – 24/7 protection, rapid deployment</span><span data-lang="fr" hidden>Unité de surveillance mobile (MSU) – Protection 24/7, déploiement rapide</span></h1>
@@ -505,6 +1065,30 @@
 
     <section>
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Why leaders choose our Mobile Surveillance Unit</span><span data-lang="fr" hidden>Pourquoi les décideurs choisissent notre unité mobile</span></h2>
+          <p class="lang-block"><span data-lang="en">Every MSU combines intelligent deterrence with the flexibility to relocate as your risk profile changes.</span><span data-lang="fr" hidden>Chaque MSU marie dissuasion intelligente et flexibilité pour suivre l'évolution de vos risques.</span></p>
+        </div>
+        <div class="value-grid">
+          <article class="card value-card">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32M8 24h32M8 38h32"/><path d="M16 4l-8 6 8 6M32 32l8 6-8 6"/></svg>
+            <h3 class="lang-block"><span data-lang="en">Rapid deployment &amp; autonomous</span><span data-lang="fr" hidden>Déploiement rapide et autonome</span></h3>
+            <p class="lang-block"><span data-lang="en">Arrives pre-configured with solar power, batteries, and secure connectivity—on duty within hours.</span><span data-lang="fr" hidden>Livrée préconfigurée avec énergie solaire, batteries et connectivité sécurisée—opérationnelle en quelques heures.</span></p>
+          </article>
+          <article class="card value-card">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M24 8v8M24 32v8M32 24h8M8 24h8M19 19l-5-5M29 29l5 5M29 19l5-5M19 29l-5 5"/></svg>
+            <h3 class="lang-block"><span data-lang="en">360° video with AI analytics</span><span data-lang="fr" hidden>Vidéo 360° avec analyses IA</span></h3>
+            <p class="lang-block"><span data-lang="en">Multi-sensor tower with PTZ optics, smart alerts, and forensic-quality recording.</span><span data-lang="fr" hidden>Mât multisenseur avec optiques PTZ, alertes intelligentes et enregistrements de qualité judiciaire.</span></p>
+          </article>
+          <article class="card value-card">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 34h28l-4 8H14l-4-8z"/><path d="M14 26h20l-4 8H18l-4-8z"/><path d="M18 12h12l-4 14h-4l-4-14z"/><path d="M22 6h4l-1 6h-2l-1-6z"/></svg>
+            <h3 class="lang-block"><span data-lang="en">Solar-powered, eco-smart</span><span data-lang="fr" hidden>Alimentation solaire, éco-efficace</span></h3>
+            <p class="lang-block"><span data-lang="en">Hybrid solar and battery system keeps the MSU running cleanly with minimal maintenance.</span><span data-lang="fr" hidden>Le système hybride solaire et batteries assure un fonctionnement propre avec peu d'entretien.</span></p>
+          </article>
+          <article class="card value-card">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 18h20l6 8-6 8H14l-6-8 6-8z"/><path d="M18 10h12l4 8-4 8H18l-4-8 4-8z"/><path d="M22 4h4l2 6-2 6h-4l-2-6 2-6z"/></svg>
+            <h3 class="lang-block"><span data-lang="en">Deters crime, reduces cost</span><span data-lang="fr" hidden>Dissuade le crime, réduit les coûts</span></h3>
+            <p class="lang-block"><span data-lang="en">Highly visible presence and audio talk-down prevent incidents without full-time guards.</span><span data-lang="fr" hidden>Une présence très visible et l'interpellation audio préviennent les incidents sans gardiens à temps plein.</span></p>
         <h2 class="lang-block"><span data-lang="en">Why teams rely on our Mobile Surveillance Unit</span><span data-lang="fr" hidden>Pourquoi les équipes choisissent notre unité de surveillance mobile</span></h2>
         <div class="value-grid">
           <article class="value-card">
@@ -533,6 +1117,26 @@
 
     <section>
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Proven across complex environments</span><span data-lang="fr" hidden>Éprouvée dans des environnements complexes</span></h2>
+          <p class="lang-block"><span data-lang="en">From municipal partners to remote industrial sites, our MSU adapts wherever visibility and control matter.</span><span data-lang="fr" hidden>Des partenaires municipaux aux sites industriels éloignés, notre MSU s'adapte là où visibilité et contrôle sont essentiels.</span></p>
+        </div>
+        <div class="use-cases">
+          <article class="use-card">
+            <h3 class="lang-block"><span data-lang="en">Municipalities &amp; by-law enforcement</span><span data-lang="fr" hidden>Municipalités et règlements municipaux</span></h3>
+            <p class="lang-block"><span data-lang="en">Deploy mobile command and crowd deterrence in parks, waterfronts, and downtown cores.</span><span data-lang="fr" hidden>Déployez un poste mobile et une dissuasion des foules dans les parcs, quais et centres-villes.</span></p>
+          </article>
+          <article class="use-card">
+            <h3 class="lang-block"><span data-lang="en">Construction &amp; remote areas</span><span data-lang="fr" hidden>Chantiers et zones éloignées</span></h3>
+            <p class="lang-block"><span data-lang="en">Protect valuable equipment, monitor deliveries, and deter trespass on dynamic job sites.</span><span data-lang="fr" hidden>Protégez l'équipement, surveillez les livraisons et dissuadez l'intrusion sur vos chantiers évolutifs.</span></p>
+          </article>
+          <article class="use-card">
+            <h3 class="lang-block"><span data-lang="en">Special events &amp; festivals</span><span data-lang="fr" hidden>Événements spéciaux et festivals</span></h3>
+            <p class="lang-block"><span data-lang="en">Gain elevated visibility, real-time alerts, and guest reassurance without infrastructure.</span><span data-lang="fr" hidden>Assurez une visibilité élevée, des alertes en temps réel et la confiance du public sans infrastructure.</span></p>
+          </article>
+          <article class="use-card">
+            <h3 class="lang-block"><span data-lang="en">Emergency response</span><span data-lang="fr" hidden>Interventions d'urgence</span></h3>
+            <p class="lang-block"><span data-lang="en">Create secure perimeters and temporary command posts for disaster recovery or detours.</span><span data-lang="fr" hidden>Créez des périmètres sécurisés et des postes de commandement temporaires lors d'interventions ou de détours.</span></p>
         <h2 class="lang-block"><span data-lang="en">Tailored for every mission</span><span data-lang="fr" hidden>Adaptée à chaque mission</span></h2>
         <div class="use-cases">
           <article class="use-card">
@@ -557,11 +1161,18 @@
 
     <section>
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Buy or rent with complete confidence</span><span data-lang="fr" hidden>Acheter ou louer en toute confiance</span></h2>
+          <p class="lang-block"><span data-lang="en">Select the commercial model that aligns with your security strategy and funding cycle.</span><span data-lang="fr" hidden>Choisissez le modèle commercial aligné sur votre stratégie de sécurité et votre cycle budgétaire.</span></p>
+        </div>
         <h2 class="lang-block"><span data-lang="en">Purchase or rent with confidence</span><span data-lang="fr" hidden>Achat ou location en toute confiance</span></h2>
         <div class="comparison">
           <article class="comparison-card">
             <h3 class="lang-block"><span data-lang="en">Buy</span><span data-lang="fr" hidden>Achat</span></h3>
             <ul>
+              <li class="lang-block"><span data-lang="en">Capital investment with full ownership and asset control.</span><span data-lang="fr" hidden>Investissement en capital avec pleine propriété et contrôle de l'actif.</span></li>
+              <li class="lang-block"><span data-lang="en">Ideal for long-term community safety, infrastructure, or corporate programs.</span><span data-lang="fr" hidden>Idéal pour les programmes durables de sécurité communautaire, d'infrastructures ou corporatifs.</span></li>
+              <li class="lang-block"><span data-lang="en">Integrate with existing monitoring, VMS, and incident workflows.</span><span data-lang="fr" hidden>S'intègre à vos systèmes de surveillance, VMS et processus d'incident existants.</span></li>
               <li><span data-lang="en">Capital investment with full ownership and control.</span><span data-lang="fr" hidden>Investissement en capital avec pleine propriété et contrôle.</span></li>
               <li><span data-lang="en">Ideal for ongoing programs or fleet expansion.</span><span data-lang="fr" hidden>Idéal pour les programmes continus ou l'expansion de flotte.</span></li>
               <li><span data-lang="en">Customization and integration to your infrastructure.</span><span data-lang="fr" hidden>Personnalisation et intégration à votre infrastructure.</span></li>
@@ -571,6 +1182,9 @@
           <article class="comparison-card">
             <h3 class="lang-block"><span data-lang="en">Rent</span><span data-lang="fr" hidden>Location</span></h3>
             <ul>
+              <li class="lang-block"><span data-lang="en">Operating expense with flexible timelines and scalable terms.</span><span data-lang="fr" hidden>Dépense d'exploitation avec échéanciers flexibles et modalités évolutives.</span></li>
+              <li class="lang-block"><span data-lang="en">Rapid deployment for temporary projects, events, or emergency situations.</span><span data-lang="fr" hidden>Déploiement rapide pour projets temporaires, événements ou situations d'urgence.</span></li>
+              <li class="lang-block"><span data-lang="en">{{brand_short}} handles maintenance, monitoring, and upgrades end-to-end.</span><span data-lang="fr" hidden>{{brand_short}} gère l'entretien, la surveillance et les mises à niveau de A à Z.</span></li>
               <li><span data-lang="en">Monthly operating expense with flexible terms.</span><span data-lang="fr" hidden>Dépense mensuelle avec modalités flexibles.</span></li>
               <li><span data-lang="en">Rapid deployment for temporary sites or events.</span><span data-lang="fr" hidden>Déploiement rapide pour sites temporaires ou événements.</span></li>
               <li><span data-lang="en">Maintenance, monitoring, and upgrades handled by experts.</span><span data-lang="fr" hidden>Entretien, surveillance et mises à jour pris en charge par nos experts.</span></li>
@@ -583,6 +1197,57 @@
 
     <section>
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Technical highlights</span><span data-lang="fr" hidden>Points techniques clés</span></h2>
+          <p class="lang-block"><span data-lang="en">Engineered to perform in extreme climates with redundant power and enterprise-grade security.</span><span data-lang="fr" hidden>Conçue pour performer dans les climats extrêmes avec alimentation redondante et sécurité de calibre entreprise.</span></p>
+        </div>
+        <details class="tech-spec" open>
+          <summary>
+            <span class="lang-block"><span data-lang="en">Power</span><span data-lang="fr" hidden>Alimentation</span></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v6l4-2-4 8v-6l-4 2z" fill="currentColor"/></svg>
+          </summary>
+          <ul class="tech-list">
+            <li class="lang-block"><span data-lang="en">Solar array with smart battery management for 24/7 uptime and quiet operation.</span><span data-lang="fr" hidden>Panneaux solaires avec gestion intelligente des batteries pour un fonctionnement silencieux et continu.</span></li>
+          </ul>
+        </details>
+        <details class="tech-spec">
+          <summary>
+            <span class="lang-block"><span data-lang="en">Connectivity</span><span data-lang="fr" hidden>Connectivité</span></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 16c4-4 12-4 16 0M7 13c3-3 7-3 10 0M10 10c1-1 3-1 4 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </summary>
+          <ul class="tech-list">
+            <li class="lang-block"><span data-lang="en">LTE/5G-ready modem with encrypted remote access and failover.</span><span data-lang="fr" hidden>Modem LTE/5G prêt avec accès à distance chiffré et redondance.</span></li>
+            <li class="lang-block"><span data-lang="en">Secure portal for shared oversight between your team and {{brand_short}}.</span><span data-lang="fr" hidden>Portail sécurisé pour une supervision conjointe entre vos équipes et {{brand_short}}.</span></li>
+          </ul>
+        </details>
+        <details class="tech-spec">
+          <summary>
+            <span class="lang-block"><span data-lang="en">Video</span><span data-lang="fr" hidden>Vidéo</span></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="4" y="6" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 9l4-2v10l-4-2z" fill="currentColor"/></svg>
+          </summary>
+          <ul class="tech-list">
+            <li class="lang-block"><span data-lang="en">360° camera array with PTZ optics, AI detection, and forensic storage.</span><span data-lang="fr" hidden>Array de caméras 360° avec optiques PTZ, détection IA et stockage légal.</span></li>
+            <li class="lang-block"><span data-lang="en">Automated alerts, intrusion analytics, and on-demand live response.</span><span data-lang="fr" hidden>Alertes automatisées, analyses d'intrusion et réponse en direct sur demande.</span></li>
+          </ul>
+        </details>
+        <details class="tech-spec">
+          <summary>
+            <span class="lang-block"><span data-lang="en">Audio</span><span data-lang="fr" hidden>Audio</span></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"/><path d="M16 8c1.5 1 1.5 5 0 6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          </summary>
+          <ul class="tech-list">
+            <li class="lang-block"><span data-lang="en">Two-way talk-down with high-output speakers for instant deterrence.</span><span data-lang="fr" hidden>Interpellation bidirectionnelle avec haut-parleurs haute puissance pour dissuasion instantanée.</span></li>
+            <li class="lang-block"><span data-lang="en">Integrated siren and strobe for emergency signalling.</span><span data-lang="fr" hidden>Sirène et gyrophare intégrés pour les alertes d'urgence.</span></li>
+          </ul>
+        </details>
+        <details class="tech-spec">
+          <summary>
+            <span class="lang-block"><span data-lang="en">Build</span><span data-lang="fr" hidden>Structure</span></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 20h16V6l-8-4-8 4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 10v10" stroke="currentColor" stroke-width="2"/></svg>
+          </summary>
+          <ul class="tech-list">
+            <li class="lang-block"><span data-lang="en">Weatherproof, tamper-resistant mast with secure equipment housing.</span><span data-lang="fr" hidden>Mât résistant aux intempéries et au sabotage avec boîtier sécurisé.</span></li>
+            <li class="lang-block"><span data-lang="en">Trailer platform enables effortless towing, positioning, and redeployment.</span><span data-lang="fr" hidden>Plateforme sur remorque facilitant le remorquage, le positionnement et le redéploiement.</span></li>
         <h2 class="lang-block"><span data-lang="en">Technical highlights</span><span data-lang="fr" hidden>Points techniques clés</span></h2>
         <details class="tech-spec" open>
           <summary><span data-lang="en">Power</span><span data-lang="fr" hidden>Alimentation</span></summary>
@@ -629,6 +1294,12 @@
           <div class="trust-logo">LOGO</div>
           <div class="trust-logo">LOGO</div>
         </div>
+        <p class="lang-block" style="font-weight:600; font-size:1.1rem;">
+          <span data-lang="en">Trusted by municipalities &amp; businesses across {{service_region}}</span>
+          <span data-lang="fr" hidden>De confiance auprès des municipalités et entreprises de {{service_region}}</span>
+        </p>
+        <blockquote>
+          <p class="lang-block"><span data-lang="en">“{{brand_short}} delivered our MSU in less than 24 hours. Their remote monitoring and proactive talk-downs reduced incidents by 60% within weeks.”</span><span data-lang="fr" hidden>« {{brand_short}} a livré notre MSU en moins de 24 heures. Leur surveillance à distance et leurs interventions vocales proactives ont réduit les incidents de 60 % en quelques semaines. »</span></p>
         <p class="lang-block"><strong><span data-lang="en">Trusted by municipalities &amp; businesses across {{service_region}}</span><span data-lang="fr" hidden>De confiance auprès des municipalités et entreprises de {{service_region}}</span></strong></p>
         <blockquote>
           <p class="lang-block"><span data-lang="en">“{{brand_short}} delivered our MSU in less than 24 hours, and their remote monitoring reduced incidents by 60% within weeks.”</span><span data-lang="fr" hidden>« {{brand_short}} a livré notre MSU en moins de 24 heures et la surveillance à distance a réduit les incidents de 60 % en quelques semaines. »</span></p>
@@ -640,6 +1311,10 @@
     <section>
       <div class="wrapper pricing-teaser">
         <h2 class="lang-block"><span data-lang="en">Transparent options for purchase or rental</span><span data-lang="fr" hidden>Options transparentes pour l'achat ou la location</span></h2>
+        <p class="lang-block"><span data-lang="en">Tell us about your project and we’ll tailor a solution that meets compliance, budget, and response speed.</span><span data-lang="fr" hidden>Parlez-nous de votre projet et nous bâtirons une solution conforme, budgétaire et rapide à déployer.</span></p>
+        <div class="pricing-buttons">
+          <button type="button" data-track="cta-pricing-buy" data-scroll data-target="#lead-form-section" data-interest="Buy"><span data-lang="en">I want to BUY</span><span data-lang="fr" hidden>Je veux ACHETER</span></button>
+          <button type="button" data-track="cta-pricing-rent" data-scroll data-target="#lead-form-section" data-interest="Rent"><span data-lang="en">I want to RENT</span><span data-lang="fr" hidden>Je veux LOUER</span></button>
         <p class="lang-block"><span data-lang="en">Tell us about your site and we'll tailor a plan in minutes.</span><span data-lang="fr" hidden>Parlez-nous de votre site et nous bâtirons un plan personnalisé en quelques minutes.</span></p>
         <div class="pricing-buttons">
           <button type="button" data-track="cta-pricing-buy" data-scroll data-interest="Buy" data-target="#lead-form"><span data-lang="en">I want to BUY</span><span data-lang="fr" hidden>Je veux ACHETER</span></button>
@@ -650,6 +1325,10 @@
 
     <section id="lead-form-section">
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Let’s plan your Mobile Surveillance Unit</span><span data-lang="fr" hidden>Planifions votre unité de surveillance mobile</span></h2>
+          <p class="lang-block"><span data-lang="en">Complete the form and our MSU specialists will respond within one business day.</span><span data-lang="fr" hidden>Remplissez le formulaire et nos spécialistes MSU vous répondront en un jour ouvrable.</span></p>
+        </div>
         <h2 class="lang-block"><span data-lang="en">Let's plan your Mobile Surveillance Unit</span><span data-lang="fr" hidden>Planifions votre unité de surveillance mobile</span></h2>
         <form id="lead-form" novalidate>
           <div class="form-grid">
@@ -718,6 +1397,7 @@
             </div>
             <div>
               <label for="message"><span data-lang="en">Project Details</span><span data-lang="fr" hidden>Détails du projet</span></label>
+              <textarea id="message" name="message"></textarea>
               <textarea id="message" name="message" placeholder=""></textarea>
             </div>
             <div class="consent">
@@ -727,6 +1407,7 @@
             <button type="submit" class="cta-button" data-track="cta-form"><span data-lang="en">Submit</span><span data-lang="fr" hidden>Envoyer</span></button>
           </div>
           <div class="alt-contact">
+            <span class="lang-block"><span data-lang="en">Prefer to connect now? Email <a href="mailto:{{cta_email}}">{{cta_email}}</a> or call <a href="tel:{{cta_phone}}">{{cta_phone}}</a>.</span><span data-lang="fr" hidden>Besoin de parler tout de suite? Écrivez à <a href="mailto:{{cta_email}}">{{cta_email}}</a> ou appelez <a href="tel:{{cta_phone}}">{{cta_phone}}</a>.</span></span>
             <span data-lang="en">Prefer to talk now? Email <a href="mailto:{{cta_email}}">{{cta_email}}</a> or call <a href="tel:{{cta_phone}}">{{cta_phone}}</a>.</span>
             <span data-lang="fr" hidden>Vous préférez discuter maintenant? Écrivez à <a href="mailto:{{cta_email}}">{{cta_email}}</a> ou appelez <a href="tel:{{cta_phone}}">{{cta_phone}}</a>.</span>
           </div>
@@ -736,6 +1417,54 @@
 
     <section>
       <div class="wrapper">
+        <div class="section-intro">
+          <h2 class="lang-block"><span data-lang="en">Frequently asked questions</span><span data-lang="fr" hidden>Foire aux questions</span></h2>
+          <p class="lang-block"><span data-lang="en">Answers to the most common MSU questions from security directors and emergency planners.</span><span data-lang="fr" hidden>Les réponses aux questions les plus fréquentes des directeurs de sécurité et coordonnateurs d'urgence.</span></p>
+        </div>
+        <div class="faq-list">
+          <article class="faq-item" data-faq>
+            <button type="button" aria-expanded="false">
+              <span class="lang-block"><span data-lang="en">How fast can the MSU be deployed?</span><span data-lang="fr" hidden>À quelle vitesse la MSU peut-elle être déployée?</span></span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div hidden>
+              <p class="lang-block"><span data-lang="en">Most deployments occur within 24 hours of confirmation. Our team manages transport, setup, calibration, and live monitoring hand-off.</span><span data-lang="fr" hidden>La majorité des déploiements se réalisent en moins de 24 heures après confirmation. Notre équipe gère le transport, l'installation, le calibrage et le transfert de la surveillance en direct.</span></p>
+            </div>
+          </article>
+          <article class="faq-item" data-faq>
+            <button type="button" aria-expanded="false">
+              <span class="lang-block"><span data-lang="en">How long does solar autonomy last?</span><span data-lang="fr" hidden>Quelle est l'autonomie solaire?</span></span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div hidden>
+              <p class="lang-block"><span data-lang="en">The hybrid solar-battery system powers the MSU continuously, even during prolonged overcast periods, with automatic generator backup when required.</span><span data-lang="fr" hidden>Le système hybride solaire-batterie alimente la MSU en continu, même lors de longues périodes nuageuses, avec une génératrice automatique au besoin.</span></p>
+            </div>
+          </article>
+          <article class="faq-item" data-faq>
+            <button type="button" aria-expanded="false">
+              <span class="lang-block"><span data-lang="en">Does the MSU work where cellular coverage is weak?</span><span data-lang="fr" hidden>La MSU fonctionne-t-elle en zone de faible couverture cellulaire?</span></span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div hidden>
+              <p class="lang-block"><span data-lang="en">Yes. Dual-carrier LTE/5G modems with high-gain antennas and satellite-ready options maintain secure connectivity in remote regions.</span><span data-lang="fr" hidden>Oui. Les modems LTE/5G double transporteur avec antennes à gain élevé et options satellite maintiennent une connectivité sécurisée en régions éloignées.</span></p>
+            </div>
+          </article>
+          <article class="faq-item" data-faq>
+            <button type="button" aria-expanded="false">
+              <span class="lang-block"><span data-lang="en">Can it integrate with our monitoring centre?</span><span data-lang="fr" hidden>Peut-elle s'intégrer à notre centre de surveillance?</span></span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div hidden>
+              <p class="lang-block"><span data-lang="en">We integrate with your VMS, PSIM, or alarm monitoring through secure APIs and shared protocols while providing 24/7 oversight.</span><span data-lang="fr" hidden>Nous intégrons votre VMS, PSIM ou centrale d'alarme via API sécurisées et protocoles partagés tout en offrant une supervision 24/7.</span></p>
+            </div>
+          </article>
+          <article class="faq-item" data-faq>
+            <button type="button" aria-expanded="false">
+              <span class="lang-block"><span data-lang="en">What warranty and support are included?</span><span data-lang="fr" hidden>Quelle garantie et quel soutien sont inclus?</span></span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div hidden>
+              <p class="lang-block"><span data-lang="en">Purchase plans include comprehensive warranty, preventative maintenance, and priority support. Rentals include full-service coverage for the term.</span><span data-lang="fr" hidden>Les achats comprennent une garantie complète, l'entretien préventif et un soutien prioritaire. Les locations offrent un service clé en main pendant toute la durée du contrat.</span></p>
         <h2 class="lang-block"><span data-lang="en">Frequently asked questions</span><span data-lang="fr" hidden>Foire aux questions</span></h2>
         <div class="faq-list">
           <article class="faq-item">
@@ -789,6 +1518,10 @@
 
     <section>
       <div class="wrapper final-cta">
+        <h2 class="lang-block"><span data-lang="en">Ready to secure your site with the Mobile Surveillance Unit?</span><span data-lang="fr" hidden>Prêt à sécuriser votre site avec la MSU?</span></h2>
+        <div class="cta-group">
+          <a class="cta-button" data-track="cta-final-primary" data-scroll data-target="#lead-form-section" href="#lead-form-section"><span data-lang="en">Request a Quote</span><span data-lang="fr" hidden>Demander une soumission</span></a>
+          <a class="cta-button" data-variant="secondary" data-track="cta-final-call" href="tel:{{cta_phone}}"><span data-lang="en">Call Now</span><span data-lang="fr" hidden>Appelez maintenant</span></a>
         <h2 class="lang-block"><span data-lang="en">Ready for 24/7 peace of mind?</span><span data-lang="fr" hidden>Prêt pour une tranquillité d'esprit 24/7?</span></h2>
         <div class="cta-group">
           <a href="#lead-form" class="cta-button" data-track="cta-final" data-scroll><span data-lang="en">Request a Quote</span><span data-lang="fr" hidden>Demander une soumission</span></a>
@@ -801,6 +1534,16 @@
   <footer>
     <div class="wrapper footer-grid">
       <div>
+        <h3 class="lang-block" style="margin-top:0;"><span data-lang="en">{{brand_name}}</span><span data-lang="fr" hidden>{{brand_name}}</span></h3>
+        <p>{{website}}</p>
+        <p><a href="mailto:{{cta_email}}">{{cta_email}}</a><br><a href="tel:{{cta_phone}}">{{cta_phone}}</a></p>
+      </div>
+      <div>
+        <h3 class="lang-block" style="margin-top:0;"><span data-lang="en">Connect</span><span data-lang="fr" hidden>Restez en contact</span></h3>
+        <div class="social-links">
+          <a href="#">LinkedIn</a>
+          <a href="#">Facebook</a>
+          <a href="#">YouTube</a>
         <strong>{{brand_name}}</strong>
         <p><a href="{{website}}">{{website}}</a></p>
         <p><a href="mailto:{{cta_email}}">{{cta_email}}</a><br><a href="tel:{{cta_phone}}">{{cta_phone}}</a></p>
@@ -826,6 +1569,10 @@
     </div>
   </footer>
 
+  <div class="toast" id="form-toast" role="status" aria-live="polite">
+    <span class="lang-block"><span data-lang="en">Thanks! We’ll contact you shortly.</span><span data-lang="fr" hidden>Merci! Nous vous contacterons sous peu.</span></span>
+  </div>
+
   <script>
     (function() {
       const langButtons = document.querySelectorAll('[data-lang-switch]');
@@ -836,6 +1583,8 @@
         fr: 'Unité de surveillance mobile | {{brand_name}}'
       };
       const descMap = {
+        en: "Deploy {{brand_name}}'s Mobile Surveillance Unit for rapid, autonomous security coverage. Purchase or rent across {{service_region}}.",
+        fr: "Déployez l'unité de surveillance mobile de {{brand_name}} pour une sécurité autonome et rapide. Achat ou location à travers {{service_region}}."
         en: 'Deploy {{brand_name}}\'s Mobile Surveillance Unit for rapid, autonomous security coverage. Purchase or rent across {{service_region}}.',
         fr: 'Déployez l\'unité de surveillance mobile de {{brand_name}} pour une sécurité autonome et rapide. Achat ou location à travers {{service_region}}.'
       };
@@ -850,6 +1599,7 @@
         docEl.lang = lang;
         langButtons.forEach(btn => btn.setAttribute('aria-pressed', btn.dataset.langSwitch === lang ? 'true' : 'false'));
         langElements.forEach(el => {
+          el.hidden = el.dataset.lang !== lang;
           if (el.dataset.lang === lang) {
             el.hidden = false;
           } else {
@@ -868,6 +1618,7 @@
       }
 
       langButtons.forEach(btn => {
+        btn.addEventListener('click', () => switchLanguage(btn.dataset.langSwitch));
         btn.addEventListener('click', () => {
           switchLanguage(btn.dataset.langSwitch);
         });
@@ -890,6 +1641,10 @@
           }
           const targetSelector = link.dataset.target || link.getAttribute('href');
           if (targetSelector && targetSelector.startsWith('#')) {
+            const target = document.querySelector(targetSelector);
+            if (target) {
+              event.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth' });
             event.preventDefault();
             const target = document.querySelector(targetSelector);
             if (target) {
@@ -913,6 +1668,13 @@
         });
       });
 
+      const leadForm = document.getElementById('lead-form');
+      const toast = document.getElementById('form-toast');
+
+      function showToast() {
+        if (!toast) return;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
       const toast = document.getElementById('form-toast');
       function showToast() {
         if (toast) {
